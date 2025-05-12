@@ -26,7 +26,7 @@
             text-align: center;
             margin-bottom: 20px;
         }
-        input, button {
+        input, select, button {
             width: 100%;
             padding: 12px;
             margin-top: 10px;
@@ -57,7 +57,11 @@
         <h2>USD to INR Converter</h2>
         <input type="number" id="usdAmount" placeholder="Enter amount in USD">
         <input type="number" id="conversionRate" placeholder="Enter USD to INR rate" value="83">
-        <button onclick="convert()">Convert & Divide</button>
+        <select id="planType">
+            <option value="monthly">Monthly Plan</option>
+            <option value="yearly">Yearly Plan</option>
+        </select>
+        <button onclick="convert()">Convert</button>
         <div class="result" id="output"></div>
     </div>
 
@@ -65,6 +69,7 @@
         function convert() {
             var usd = parseFloat(document.getElementById('usdAmount').value);
             var rate = parseFloat(document.getElementById('conversionRate').value);
+            var planType = document.getElementById('planType').value;
 
             if (isNaN(usd) || isNaN(rate) || usd <= 0 || rate <= 0) {
                 document.getElementById('output').innerText = "Please enter valid positive numbers.";
@@ -72,10 +77,10 @@
             }
 
             var totalInr = usd * rate;
-            var monthlyInr = totalInr / 12;
+            var monthlyInr = (planType === "yearly") ? totalInr / 12 : totalInr;
 
             document.getElementById('output').innerHTML = 
-                `Total in INR: ₹${totalInr.toFixed(2)}<br>Monthly Cost (12 parts): ₹${monthlyInr.toFixed(2)}`;
+                `Total in INR: ₹${totalInr.toFixed(2)}<br>${planType === "yearly" ? "Monthly Cost (Yearly divided by 12)" : "Monthly Cost"}: ₹${monthlyInr.toFixed(2)}`;
         }
     </script>
 </body>
